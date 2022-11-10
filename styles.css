@@ -34,6 +34,7 @@ body {
 /* ------------------- D I S P L A Y ----------------- */
 
 .display-wrapper {
+    flex: 1;
     background-image: linear-gradient(to left top, 
         #856d85, #af7388, #b17f7a, 
         #b6895a, #b4af84, #77b69d);
@@ -43,7 +44,7 @@ body {
 }
 
 .display {
-    flex: 1;
+    height: 8vmin;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -141,6 +142,7 @@ button:active {
     }
 
     .display {
+        height: 16vmin;
         margin: 4vmin;
         padding: 1vmin 2vmin;
         font-size: 10vmin;
