@@ -171,6 +171,10 @@ button:active {
         padding-right: 4vmin;
     }    
 
+    .num {
+        font-size: 8vmin;
+     }
+
 }
 
 /* ==================================================== */
