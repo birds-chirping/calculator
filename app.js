@@ -2,7 +2,7 @@ const btnContainer = document.querySelector('.buttons-container');
 const display = document.querySelector('.display');
 display.textContent = 'Hello!';
 
-const btnData = [['sign', '+/-'], ['clear', 'C'], ['del', "\u232B"], 
+const btnData = [['clear', 'C'], ['sign', '+/-'], ['del', "\u232B"], 
                  ['n7', 7, 'num'], ['n8', 8, 'num'], ['n9', 9, 'num'], ['divide','/', 'op'],
                  ['n4', 4, 'num'], ['n5', 5, 'num'], ['n6', 6, 'num'], ['mul', '*', 'op'],
                  ['n1', 1, 'num'], ['n2', 2, 'num'], ['n3', 3, 'num'], ['sub', '-', 'op'],
@@ -21,10 +21,14 @@ btnData.forEach(b => {
     }
     btn.textContent = b[1];
     btnContainer.appendChild(btn);
-    if (b[2] == 'num') {
+    if (b[2] === 'num') {
         btn.addEventListener('click', clickNum);
-    } else if (b[2] == 'op') {
+    } else if (b[2] === 'op') {
         btn.addEventListener('click', clickOp);
+    } else if (b[0] === 'clear') {
+        btn.addEventListener('click', clickC);        
+    } else if (b[0] === 'equal') {
+        btn.addEventListener('click', clickEq);
     }
 })
 
@@ -49,6 +53,28 @@ function clickNum() {
 
 }
 
+
+function clickOp() {
+    myEval(firstNum, secondNum, operator);
+    operator = this.id;
+}
+
+function clickC() {
+    firstNum = '';
+    secondNum = '';
+    operator = '';
+    display.textContent = '0';
+}
+
+
+function clickEq() {
+    myEval(firstNum, secondNum, operator);
+    console.log(firstNum, secondNum, operator);
+    firstNum = '';
+    operator = '';
+}
+
+
 function myEval(first, second, op) {
     if (first && second) {
         switch (op) {
@@ -71,10 +97,6 @@ function myEval(first, second, op) {
     } 
 }
 
-function clickOp() {
-    myEval(firstNum, secondNum, operator);
-    operator = this.id;
-}
 
 function addNums(first, second) {
     return (+first + +second).toString();
