@@ -53,20 +53,16 @@ function myEval(first, second, op) {
     if (first && second) {
         switch (op) {
             case 'add': 
-                console.log(`add ${first} and ${second}`);
                 firstNum = addNums(first, second);
                 break;
             case 'sub':
-                console.log(`Sub ${first} and ${second}`);
                 firstNum = subNums(first, second);
                 break;        
             case 'mul': 
-                console.log(`Mul ${first} and ${second}`);
                 firstNum = mulNums(first, second);
                 break;
             case 'divide':
                 firstNum = divNums(first, second);
-                console.log(`Div ${first} and ${second}`);
         }
 
         display.textContent = firstNum;
@@ -81,19 +77,19 @@ function clickOp() {
 }
 
 function addNums(first, second) {
-    return +first + +second;
+    return (+first + +second).toString();
 }
 
 function subNums(first, second) {
-    return first - second;
+    return (first - second).toString();
 }
 
 function mulNums(first, second) {
-    return first * second;
+    return (first * second).toString();
 }
 
 function divNums(first, second) {
-    return first / second;
+    return (first / second).toString();
 }
 
 // TODO: 
@@ -103,4 +99,3 @@ function divNums(first, second) {
     //  +/-
     //  floating point
     //  equal
-    //  fix 0 divided by x.
