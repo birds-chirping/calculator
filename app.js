@@ -12,6 +12,9 @@ const btnData = [['clear', 'C'], ['sign', '+/-'], ['del', "\u232B"],
 let firstNum = '';
 let secondNum = '';
 let operator;
+let result;
+
+// -----------------ADD BUTTONS-------------------- //
 
 btnData.forEach(b => {
     let btn = document.createElement('button');
@@ -21,17 +24,66 @@ btnData.forEach(b => {
     }
     btn.textContent = b[1];
     btnContainer.appendChild(btn);
-    if (b[2] === 'num') {
-        btn.addEventListener('click', clickNum);
-    } else if (b[2] === 'op') {
-        btn.addEventListener('click', clickOp);
-    } else if (b[0] === 'clear') {
-        btn.addEventListener('click', clickC);        
-    } else if (b[0] === 'equal') {
-        btn.addEventListener('click', clickEq);
+
+    switch(true) {
+        case b[2] === 'num':
+            btn.addEventListener('click', clickNum);
+            break;
+        case b[2] === 'op':
+            btn.addEventListener('click', clickOp);
+            break;
+        case b[0] === 'clear':
+            btn.addEventListener('click', clickC);    
+            break;
+        case b[0] === 'equal':
+            btn.addEventListener('click', clickEq);
+            break;
+        case b[0] === 'sign':
+            btn.addEventListener('click', clickSign);  
+                      
     }
 })
 
+// -----------------O P E R A T I O N S-------------------- //
+
+function addNums(first, second) {
+    return (+first + +second).toString();
+}
+
+function subNums(first, second) {
+    return (first - second).toString();
+}
+
+function mulNums(first, second) {
+    return (first * second).toString();
+}
+
+function divNums(first, second) {
+    return (first / second).toString();
+}
+
+
+
+function myEval(first, second, op) {
+    if (first && second) {
+        switch (op) {
+            case 'add': 
+                result = addNums(first, second);
+                break;
+            case 'sub':
+                result = subNums(first, second);
+                break;        
+            case 'mul': 
+                result = mulNums(first, second);
+                break;
+            case 'divide':
+                result = divNums(first, second);
+        }
+    } 
+}
+
+
+// -----------------O P E R A N D S-------------------- //
 
 function clickNum() {
     if (operator && firstNum) {
@@ -50,74 +102,65 @@ function clickNum() {
         console.log('Maximum number of digits exceeded.')
     }
             // ----------------------------------------TODO: check floats length!!
+    console.log('f: ', firstNum, 's: ', secondNum);
 
 }
 
+// -----------------O P E R A T O R S-------------------- //
 
 function clickOp() {
-    myEval(firstNum, secondNum, operator);
-    operator = this.id;
+    if (!firstNum && result) {
+        firstNum = result;
+    }
+
+    if (!secondNum) {
+        operator = this.id;
+    } else if (secondNum) {
+        myEval(firstNum, secondNum, operator);
+        firstNum = result;
+        secondNum = '';
+        display.textContent = result;
+        console.log(result);
+        operator = this.id;
+    } 
 }
 
 function clickC() {
     firstNum = '';
     secondNum = '';
     operator = '';
-    display.textContent = '0';
+    result = '';
+    display.textContent = 'ʕ •ᴥ•ʔ';
 }
 
 
 function clickEq() {
-    myEval(firstNum, secondNum, operator);
-    console.log(firstNum, secondNum, operator);
-    firstNum = '';
-    operator = '';
+    if (secondNum) {
+        myEval(firstNum, secondNum, operator);
+        // console.log(result);
+        display.textContent = result;
+        firstNum = result;
+    console.log('r:', result, 'f:', firstNum, 's:', secondNum);
+    }
 }
 
-
-function myEval(first, second, op) {
-    if (first && second) {
-        switch (op) {
-            case 'add': 
-                firstNum = addNums(first, second);
-                break;
-            case 'sub':
-                firstNum = subNums(first, second);
-                break;        
-            case 'mul': 
-                firstNum = mulNums(first, second);
-                break;
-            case 'divide':
-                firstNum = divNums(first, second);
-        }
-
+function clickSign(){
+    console.log('r:', result, 'f:', firstNum, 's:', secondNum);
+    if (display.textContent == result) {
+        firstNum = -firstNum;
         display.textContent = firstNum;
         secondNum = '';
-        operator = op;
-    } 
-}
-
-
-function addNums(first, second) {
-    return (+first + +second).toString();
-}
-
-function subNums(first, second) {
-    return (first - second).toString();
-}
-
-function mulNums(first, second) {
-    return (first * second).toString();
-}
-
-function divNums(first, second) {
-    return (first / second).toString();
+    } else if (display.textContent == secondNum) {
+        secondNum = -secondNum;
+        display.textContent = secondNum;
+    } else if (firstNum) {
+        firstNum = -firstNum;
+        display.textContent = firstNum;
+    }
 }
 
 // TODO: 
 // add functionality for:
-    //  C
     //  backspace
-    //  +/-
     //  floating point
-    //  equal
+    //  fix display overflow
