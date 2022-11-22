@@ -1,5 +1,5 @@
 const btnContainer = document.querySelector('.buttons-container');
-const display = document.querySelector('.display');
+const display = document.querySelector('.display-content');
 display.textContent = 'Hello!';
 
 const btnData = [['clear', 'C'], ['sign', '+/-'], ['del', "\u232B"], 
@@ -11,8 +11,9 @@ const btnData = [['clear', 'C'], ['sign', '+/-'], ['del', "\u232B"],
 
 let firstNum = '';
 let secondNum = '';
-let operator;
-let result;
+let operator = '';
+let last = '';
+let number = 'first';
 
 // -----------------ADD BUTTONS-------------------- //
 
@@ -39,128 +40,171 @@ btnData.forEach(b => {
             btn.addEventListener('click', clickEq);
             break;
         case b[0] === 'sign':
-            btn.addEventListener('click', clickSign);  
-                      
+            btn.addEventListener('click', clickSign); 
+            break;
+        case b[0] === 'del':
+            btn.addEventListener('click', backspace);
+            break;
+        case b[0] === 'fpoint':
+            btn.addEventListener('click', clickPoint);
     }
 })
 
-// -----------------O P E R A T I O N S-------------------- //
 
-function addNums(first, second) {
-    return (+first + +second).toString();
-}
-
-function subNums(first, second) {
-    return (first - second).toString();
-}
-
-function mulNums(first, second) {
-    return (first * second).toString();
-}
-
-function divNums(first, second) {
-    return (first / second).toString();
-}
-
-
+// ---------------- E V A L -------------------- //
 
 function myEval(first, second, op) {
-    if (first && second) {
-        switch (op) {
-            case 'add': 
-                result = addNums(first, second);
-                break;
-            case 'sub':
-                result = subNums(first, second);
-                break;        
-            case 'mul': 
-                result = mulNums(first, second);
-                break;
-            case 'divide':
-                result = divNums(first, second);
-        }
-    } 
+    switch (op) {
+        case 'add': 
+            return (+first + +second).toString();
+        case 'sub':
+            return (first - second).toString();
+        case 'mul': 
+            return (first * second).toString();
+        case 'divide':
+            if (second == '0'){
+                console.log("Cannot divide by 0");
+                return first;
+            } else {
+                return (first / second).toString();
+            }
+    }
 }
 
 
 // -----------------O P E R A N D S-------------------- //
 
-function clickNum() {
-    if (operator && firstNum) {
-        if (operator == 'divide' && this.textContent == '0' && !secondNum) {
-            // ----------------------------------------TODO: create popup here !!
-            console.log("Let's not invent math!");
-        } else {
-            secondNum += this.textContent;
-            display.textContent = secondNum;
-        }
-    } else if (firstNum.length < 15) {
-        firstNum += this.textContent;
-        display.textContent = firstNum;
+function addDigit(d) {
+    if (number === 'first') {
+        firstNum = checkAndAdd(firstNum, d);          // [x] + y
     } else {
-            // ----------------------------------------TODO: create popup here !!
+        secondNum = checkAndAdd(secondNum, d);        // x + [y]
+    }
+    console.log('f: ', firstNum, 's: ', secondNum, 'op', operator, 'last', last);
+}
+
+
+function checkAndAdd(num, d) {
+    // Add digit to number only if the number of digits is below 15.
+
+    if (num.length < 15 || (num.length < 16 && num.includes('-'))) {
+        num += d;
+        display.textContent = num;
+        last = 'num';
+    } else {
         console.log('Maximum number of digits exceeded.')
     }
+    return num;
             // ----------------------------------------TODO: check floats length!!
-    console.log('f: ', firstNum, 's: ', secondNum);
-
 }
+
+
+function clickNum() {
+    addDigit(this.textContent);
+}
+
+
+function clickSign() {
+    if (number === 'first') {
+        firstNum = changeSign(firstNum);
+        display.textContent = firstNum;
+    } else {
+        secondNum = changeSign(secondNum);
+        display.textContent = secondNum;
+    }
+    last = 'sign';
+    console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
+}
+
+function changeSign(num) {
+    return !num ? '-' : num === '-' ? '' : (-num).toString();
+}
+
+
+function backspace() {
+    if (['', 'op'].includes(last)) {
+        // pass
+    } else if (number === 'first') {              // [x] + y
+        firstNum = firstNum.slice(0,-1);
+        display.textContent = firstNum;
+        last = 'back';
+    } else {                                      // x + [y]
+        secondNum = secondNum.slice(0, -1);
+        display.textContent = secondNum;
+        last = 'back';
+    }  
+    console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
+}
+
+
+function addPoint(num) {
+    if (!num || num === '-') {
+        addDigit('0.');
+        last = '.';
+    } else if (!num.includes('.')) {
+        addDigit('.');
+        last = '.';
+    }
+}
+
+function clickPoint() {
+    if (number === 'first') {
+        addPoint(firstNum);
+    } else {
+        addPoint(secondNum);
+    }
+}
+
 
 // -----------------O P E R A T O R S-------------------- //
 
 function clickOp() {
-    if (!firstNum && result) {
-        firstNum = result;
-    }
-
-    if (!secondNum) {
+    if (firstNum && firstNum !== '-' && !secondNum) {        // x [+] .. 
         operator = this.id;
-    } else if (secondNum) {
-        myEval(firstNum, secondNum, operator);
-        firstNum = result;
+        last = 'op';
+        number = 'second';
+        console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
+    } else if (secondNum && secondNum !== '-') {             // x + y [+] ..
+        firstNum = myEval(firstNum, secondNum, operator);
+        display.textContent = firstNum;
+        operator = this.id;
+        last = 'op';
         secondNum = '';
-        display.textContent = result;
-        console.log(result);
-        operator = this.id;
+        number = 'second';
+        console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
+    }
+}
+
+
+function clickEq() {
+    if (['', 'op', 'eq'].includes(last)) {
+        //pass
+    } else if (secondNum.length > 0 && secondNum !== '-') {     // x + y [=]  => first
+        firstNum = myEval(firstNum, secondNum, operator);
+        display.textContent = firstNum;
+        secondNum = '';
+        operator = '';
+        last = 'eq';
+        number = 'first';
+        console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
     } 
 }
+
 
 function clickC() {
     firstNum = '';
     secondNum = '';
     operator = '';
-    result = '';
-    display.textContent = 'ʕ •ᴥ•ʔ';
+    display.textContent = '';
+    last = '';
+    number = 'first';
+    // show blinking cursor
 }
 
-
-function clickEq() {
-    if (secondNum) {
-        myEval(firstNum, secondNum, operator);
-        // console.log(result);
-        display.textContent = result;
-        firstNum = result;
-    console.log('r:', result, 'f:', firstNum, 's:', secondNum);
-    }
-}
-
-function clickSign(){
-    console.log('r:', result, 'f:', firstNum, 's:', secondNum);
-    if (display.textContent == result) {
-        firstNum = -firstNum;
-        display.textContent = firstNum;
-        secondNum = '';
-    } else if (display.textContent == secondNum) {
-        secondNum = -secondNum;
-        display.textContent = secondNum;
-    } else if (firstNum) {
-        firstNum = -firstNum;
-        display.textContent = firstNum;
-    }
-}
 
 // TODO: 
 // add functionality for:
-    //  backspace
-    //  floating point
-    //  fix display overflow
+    //  fix display overflow    
+    //  keyboard input
+    //  text cursor blinking effect
+    

@@ -56,6 +56,25 @@ body {
     box-shadow: inset 0.3vmin 0.3vmin 0.3vmin rgba(0, 0, 0, 0.299);
 }
 
+.blinking {
+
+    animation: opacity 1s ease-in-out infinite;
+    opacity: 1;
+}
+
+@keyframes opacity {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
 
 /* ------------------- B U T T O N S ----------------- */
 
