@@ -56,19 +56,37 @@ btnData.forEach(b => {
 function myEval(first, second, op) {
     switch (op) {
         case 'add': 
-            return (+first + +second).toString();
+            res =  (+first + +second).toString();
+            break;
         case 'sub':
-            return (first - second).toString();
+            res =  (first - second).toString();
+            break;
         case 'mul': 
-            return (first * second).toString();
+            res =  (first * second).toString();
+            break;
         case 'divide':
             if (second == '0'){
                 console.log("Cannot divide by 0");
-                return first;
+                res = first;
             } else {
-                return (first / second).toString();
+                res =  (first / second).toString();
             }
     }
+
+    // Prevent overflow:
+    if (!res.includes('e')) {
+        point = res.indexOf('.');
+        if (point > 0 && point < 15) {
+            res = Number(res).toFixed(15 - point - 1);
+        } 
+        else if (res.length > 15 && !res.includes('-') || res.length > 16 && res.includes('-')) {
+            res = Number(res).toExponential(10);
+        } 
+    } else {
+        res = Number(res).toExponential(10);
+    }
+
+    return res;
 }
 
 
@@ -117,7 +135,15 @@ function clickSign() {
 }
 
 function changeSign(num) {
-    return !num ? '-' : num === '-' ? '' : (-num).toString();
+    if (!num) {
+        return '-';
+    } else if (num === '-') {
+        return '';
+    } else if (num.startsWith('-') ) {
+        return num.replace('-', '');
+    } else {
+        return '-' + num;
+    }
 }
 
 
