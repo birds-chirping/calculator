@@ -15,7 +15,7 @@ let operator = '';
 let last = '';
 let number = 'first';
 
-// -----------------ADD BUTTONS-------------------- //
+// ---------- A D D   B U T T O N S ---------- //
 
 btnData.forEach(b => {
     let btn = document.createElement('button');
@@ -28,10 +28,10 @@ btnData.forEach(b => {
 
     switch(true) {
         case b[2] === 'num':
-            btn.addEventListener('click', clickNum);
+            btn.addEventListener('click', () => addDigit(btn.textContent));
             break;
         case b[2] === 'op':
-            btn.addEventListener('click', clickOp);
+            btn.addEventListener('click', () => clickOp(btn.textContent));
             break;
         case b[0] === 'clear':
             btn.addEventListener('click', clickC);    
@@ -47,29 +47,54 @@ btnData.forEach(b => {
             break;
         case b[0] === 'fpoint':
             btn.addEventListener('click', clickPoint);
-    }
-})
+    }   
+});
 
+// --------- K E Y B O A R D   I N P U T ------- //
+
+document.addEventListener('keydown', (e) => {
+    console.log(e);
+    switch (true) {
+        case !isNaN(e.key):
+            addDigit(e.key);
+            break;
+        case '/*-+'.includes(e.key):
+            clickOp(e.key);
+            break;
+        case e.code === 'KeyC':
+            clickC();
+            break;
+        case e.key === 'Enter':
+            clickEq();
+            break;
+        case e.key === 'Backspace':
+            backspace();
+            break;
+        case e.key === '.':
+            clickPoint();            
+    }
+
+});
 
 // ---------------- E V A L -------------------- //
 
 function myEval(first, second, op) {
     switch (op) {
-        case 'add': 
-            res =  (+first + +second).toString();
+        case '+': 
+            res = (+first + +second).toString();
             break;
-        case 'sub':
-            res =  (first - second).toString();
+        case '-':
+            res = (first - second).toString();
             break;
-        case 'mul': 
-            res =  (first * second).toString();
+        case '*': 
+            res = (first * second).toString();
             break;
-        case 'divide':
+        case '/':
             if (second == '0'){
                 console.log("Cannot divide by 0");
                 res = first;
             } else {
-                res =  (first / second).toString();
+                res = (first / second).toString();
             }
     }
 
@@ -77,20 +102,19 @@ function myEval(first, second, op) {
     if (!res.includes('e')) {
         point = res.indexOf('.');
         if (point > 0 && point < 15) {
-            res = Number(res).toFixed(15 - point - 1);
-        } 
-        else if (res.length > 15 && !res.includes('-') || res.length > 16 && res.includes('-')) {
-            res = Number(res).toExponential(10);
+            res = parseFloat(Number(res).toFixed(15 - point - 1)).toString();
+        } else if (res.length > 15 && !res.includes('-') || res.length > 16 && res.includes('-')) {
+            res = Number(res).toExponential(12);
         } 
     } else {
-        res = Number(res).toExponential(10);
+        res = Number(res).toExponential(12);
     }
 
     return res;
 }
 
 
-// -----------------O P E R A N D S-------------------- //
+// ----------------- O P E R A N D S -------------------- //
 
 function addDigit(d) {
     if (number === 'first') {
@@ -101,10 +125,8 @@ function addDigit(d) {
     console.log('f: ', firstNum, 's: ', secondNum, 'op', operator, 'last', last);
 }
 
-
 function checkAndAdd(num, d) {
     // Add digit to number only if the number of digits is below 15.
-
     if (num.length < 15 || (num.length < 16 && num.includes('-'))) {
         num += d;
         display.textContent = num;
@@ -113,14 +135,7 @@ function checkAndAdd(num, d) {
         console.log('Maximum number of digits exceeded.')
     }
     return num;
-            // ----------------------------------------TODO: check floats length!!
 }
-
-
-function clickNum() {
-    addDigit(this.textContent);
-}
-
 
 function clickSign() {
     if (number === 'first') {
@@ -146,7 +161,6 @@ function changeSign(num) {
     }
 }
 
-
 function backspace() {
     if (['', 'op'].includes(last)) {
         // pass
@@ -161,7 +175,6 @@ function backspace() {
     }  
     console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
 }
-
 
 function addPoint(num) {
     if (!num || num === '-') {
@@ -182,25 +195,24 @@ function clickPoint() {
 }
 
 
-// -----------------O P E R A T O R S-------------------- //
+// ----------------- O P E R A T O R S -------------------- //
 
-function clickOp() {
+function clickOp(op) {
     if (firstNum && firstNum !== '-' && !secondNum) {        // x [+] .. 
-        operator = this.id;
+        operator = op;
         last = 'op';
         number = 'second';
         console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
     } else if (secondNum && secondNum !== '-') {             // x + y [+] ..
         firstNum = myEval(firstNum, secondNum, operator);
         display.textContent = firstNum;
-        operator = this.id;
+        operator = op;
         last = 'op';
         secondNum = '';
         number = 'second';
         console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
     }
 }
-
 
 function clickEq() {
     if (['', 'op', 'eq'].includes(last)) {
@@ -216,7 +228,6 @@ function clickEq() {
     } 
 }
 
-
 function clickC() {
     firstNum = '';
     secondNum = '';
@@ -230,7 +241,6 @@ function clickC() {
 
 // TODO: 
 // add functionality for:
-    //  fix display overflow    
-    //  keyboard input
     //  text cursor blinking effect
+    //  fix leading zeros
     
