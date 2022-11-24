@@ -126,6 +126,11 @@ function addDigit(d) {
 }
 
 function checkAndAdd(num, d) {
+    // Remove leading zeros
+    if (num === '0' && d !== '.') {
+        num = '';
+    }
+
     // Add digit to number only if the number of digits is below 15.
     if (num.length < 15 || (num.length < 16 && num.includes('-'))) {
         num += d;
