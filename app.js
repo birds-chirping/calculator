@@ -16,7 +16,6 @@ let secondNum = '';
 let operator = '';
 let last = '';
 let number = 'first';
-let zero = 'n';
 
 // ---------- A D D   B U T T O N S ---------- //
 
@@ -60,64 +59,63 @@ document.addEventListener('keydown', (e) => {
     switch (true) {
         case !isNaN(e.key):
             addDigit(e.key);
+            id = 'n' + e.key;
+            console.log(id);
             break;
         case '/*-+'.includes(e.key):
             clickOp(e.key);
+            switch (true){
+                case e.key == '+':
+                    id = 'add';
+                    break;
+                case e.key == '-':
+                    id = 'sub';
+                    break;
+                case e.key == '*':
+                    id = 'mul';
+                    break;  
+                case e.key == '/':
+                    id = 'divide';
+            }
             break;
         case e.code === 'KeyC':
             clickC();
+            id = 'clear';
             break;
-        case e.key === 'Enter':
+        case e.key === 'Enter' || e.key === '=':
+            id = 'equal';
             clickEq();
             break;
         case e.key === 'Backspace':
+            id = 'del';
             backspace();
             break;
         case e.key === '.':
+            id = 'fpoint';
             clickPoint();            
     }
-
+    const b = document.querySelector(`#${id}`);
+    b.classList.add('active');
+    setTimeout(() => {
+        b.classList.remove('active');
+    }, 200);   
 });
 
 
-// ---------------- E V A L -------------------- //
 
-function myEval(first, second, op) {
-    switch (op) {
-        case '+': 
-            res = (+first + +second).toString();
-            break;
-        case '-':
-            res = (first - second).toString();
-            break;
-        case '*': 
-            res = (first * second).toString();
-            break;
-        case '/':
-            if (second == '0'){
-                console.log("Cannot divide by 0");
-                res = first;
-                displayError('Cannot divide by 0', 800, false);
+// ----------------- E R R O R ---------------------------//
 
-            } else {
-                res = (first / second).toString();
-            }
+function displayError(mess, time=1000, small=true) {
+    errorMess.textContent = mess;
+    errorMess.classList.add('visible');
+    if(small) {
+        errorMess.classList.add('small-text');
     }
-
-    // Prevent overflow:
-    if (!res.includes('e')) {
-        point = res.indexOf('.');
-        if (point > 0 && point < 15) {
-            res = parseFloat(Number(res).toFixed(15 - point - 1)).toString();
-        } else if (res.length > 15 && !res.includes('-') || res.length > 16 && res.includes('-')) {
-            res = Number(res).toExponential(12);
-        } 
-    } else {
-        res = Number(res).toExponential(12);
-    }
-    return res;    
+    setTimeout(() => {
+        errorMess.classList.remove('visible', 'small-text');
+        errorMess.textContent = '';
+    }, time);
 }
-
 
 // ----------------- O P E R A N D S -------------------- //
 
@@ -153,18 +151,6 @@ function checkAndAdd(num, d) {
         displayError('Maximum number of digits exceeded');
     }
     return num;
-}
-
-function displayError(mess, time=1000, small=true) {
-    errorMess.textContent = mess;
-    errorMess.classList.add('visible');
-    if(small) {
-        errorMess.classList.add('small-text');
-    }
-    setTimeout(() => {
-        errorMess.classList.remove('visible', 'small-text');
-        errorMess.textContent = '';
-    }, time);
 }
 
 function clickSign() {
@@ -229,6 +215,42 @@ function clickPoint() {
     cursor.classList.remove('blinking');
 }
 
+// ---------------- E V A L -------------------- //
+
+function myEval(first, second, op) {
+    switch (op) {
+        case '+': 
+            res = (+first + +second).toString();
+            break;
+        case '-':
+            res = (first - second).toString();
+            break;
+        case '*': 
+            res = (first * second).toString();
+            break;
+        case '/':
+            if (second == '0'){
+                console.log("Cannot divide by 0");
+                res = first;
+                displayError('Cannot divide by 0', 800, false);
+            } else {
+                res = (first / second).toString();
+            }
+    }
+
+    // Prevent overflow:
+    if (!res.includes('e')) {
+        point = res.indexOf('.');
+        if (point > 0 && point < 15) {
+            res = parseFloat(Number(res).toFixed(15 - point - 1)).toString();
+        } else if (res.length > 15 && !res.includes('-') || res.length > 16 && res.includes('-')) {
+            res = Number(res).toExponential(12);
+        } 
+    } else {
+        res = Number(res).toExponential(12);
+    }
+    return res;    
+}
 
 // ----------------- O P E R A T O R S -------------------- //
 
