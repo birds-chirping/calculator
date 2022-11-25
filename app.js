@@ -1,5 +1,7 @@
 const btnContainer = document.querySelector('.buttons-container');
 const display = document.querySelector('.display-content');
+const cursor = document.querySelector('.cursor');
+const errorMess = document.querySelector('.err');
 display.textContent = 'Hello!';
 
 const btnData = [['clear', 'C'], ['sign', '+/-'], ['del', "\u232B"], 
@@ -14,6 +16,7 @@ let secondNum = '';
 let operator = '';
 let last = '';
 let number = 'first';
+let zero = 'n';
 
 // ---------- A D D   B U T T O N S ---------- //
 
@@ -76,6 +79,7 @@ document.addEventListener('keydown', (e) => {
 
 });
 
+
 // ---------------- E V A L -------------------- //
 
 function myEval(first, second, op) {
@@ -93,6 +97,8 @@ function myEval(first, second, op) {
             if (second == '0'){
                 console.log("Cannot divide by 0");
                 res = first;
+                displayError('Cannot divide by 0', 800, false);
+
             } else {
                 res = (first / second).toString();
             }
@@ -109,8 +115,7 @@ function myEval(first, second, op) {
     } else {
         res = Number(res).toExponential(12);
     }
-
-    return res;
+    return res;    
 }
 
 
@@ -122,10 +127,17 @@ function addDigit(d) {
     } else {
         secondNum = checkAndAdd(secondNum, d);        // x + [y]
     }
+    cursor.classList.remove('blinking');
     console.log('f: ', firstNum, 's: ', secondNum, 'op', operator, 'last', last);
 }
 
 function checkAndAdd(num, d) {
+    // Blinking feedback
+    if (num === '0' && d === '0') {
+        display.classList.add('half');
+        setTimeout(() => display.classList.remove('half'), 100);
+    }
+
     // Remove leading zeros
     if (num === '0' && d !== '.') {
         num = '';
@@ -137,9 +149,22 @@ function checkAndAdd(num, d) {
         display.textContent = num;
         last = 'num';
     } else {
-        console.log('Maximum number of digits exceeded.')
+        console.log('Maximum number of digits exceeded.');
+        displayError('Maximum number of digits exceeded');
     }
     return num;
+}
+
+function displayError(mess, time=1000, small=true) {
+    errorMess.textContent = mess;
+    errorMess.classList.add('visible');
+    if(small) {
+        errorMess.classList.add('small-text');
+    }
+    setTimeout(() => {
+        errorMess.classList.remove('visible', 'small-text');
+        errorMess.textContent = '';
+    }, time);
 }
 
 function clickSign() {
@@ -178,6 +203,10 @@ function backspace() {
         display.textContent = secondNum;
         last = 'back';
     }  
+
+    if (display.textContent === '') {
+        cursor.classList.add('blinking');
+    }
     console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
 }
 
@@ -197,6 +226,7 @@ function clickPoint() {
     } else {
         addPoint(secondNum);
     }
+    cursor.classList.remove('blinking');
 }
 
 
@@ -207,6 +237,11 @@ function clickOp(op) {
         operator = op;
         last = 'op';
         number = 'second';
+
+        // Blinking feedback
+        display.classList.add('half');
+        setTimeout(() => display.classList.remove('half'), 100);
+        
         console.log('f:', firstNum, 's:', secondNum, 'op', operator, 'last', last);
     } else if (secondNum && secondNum !== '-') {             // x + y [+] ..
         firstNum = myEval(firstNum, secondNum, operator);
@@ -240,12 +275,6 @@ function clickC() {
     display.textContent = '';
     last = '';
     number = 'first';
-    // show blinking cursor
+    cursor.classList.add('blinking');
 }
-
-
-// TODO: 
-// add functionality for:
-    //  text cursor blinking effect
-    //  fix leading zeros
     
