@@ -1,12 +1,18 @@
+:root {
+    --app-width: 40vmin;
+}
+
 html { 
-    background: url(./images/bg.jpg) no-repeat center center fixed; 
+    background: url(./images/bg_img.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
   }
 
-* {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -15,19 +21,37 @@ html {
 
 body {
     height: 100vh;
+    /* height: 100svh; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    position: relative;
+    justify-content: space-around;
 }
+
+a {
+    text-decoration: none;
+}
+
+a:link, a:visited {
+    color: #976ee4a4;
+}
+
+a:hover, a:active {
+    color: #ee93c5;
+}
+
 
 .container {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    height: 60vmin;
-    width: 40vmin;
+    height: 62vmin;
+    width: var(--app-width);
+}
+
+.calc-wrapper {
+    flex: 8;
+    display: flex;
+    align-items: center;
 }
 
 
@@ -54,7 +78,6 @@ body {
     font-size: 5vmin;
     background-color: grey;
     box-shadow: inset 0.3vmin 0.3vmin 0.3vmin rgba(0, 0, 0, 0.299);
-
     position: relative;
 }
 
@@ -150,6 +173,11 @@ button:active {
     color:#77b69d;
 }
 
+button:focus-visible {
+    outline: none;
+    color:#77b69d;
+}
+
 #fpoint,
 #sign, 
 #clear,
@@ -168,12 +196,120 @@ button:active {
     color: #d1985b;   
 }
 
+.active {
+    color:#77b69d;
+}
 
 /* ------------------- C R E D I T S ----------------- */
 
 .credits {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+    /* width: 15vmin; */
+    margin-bottom: 6vmin;
+}
+
+
+.s-button {
+    box-shadow: 0 0 1vmin hsla(0, 0%, 100%, 0.550);
+    height: 6vmin;
+    width: 6vmin;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    line-height: normal;
+    font-family: 'Fredoka One', cursive;
+    font-size: 3.5vmin;
+    text-shadow: none;
+    
+    padding-top: 4%;
+    background-color: transparent;
+    color: white;
+
+    position: relative;
+    transition: box-shadow 500ms, background-color 500ms, color 500ms;
+
+}
+
+
+
+
+.s-button::before {
+    pointer-events: none;
+    content: '';
     position: absolute;
-    bottom: 5vmin;
+    background-color: white;
+    top: 80%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: perspective(2.5vmin) rotateX(50deg) scale(0.9, 0.4);
+    filter: blur(1.8vmin);
+    opacity: 0.1;
+    transition: background-color 200ms linear, opacity 300ms;
+}
+
+
+.s-button:hover,
+.s-button:focus-visible  {
+    box-shadow: 0 0 2vmin #76fac56b,
+                0 0 4vmin #76fac5af;
+    color:  #a5fdd8;
+    text-shadow: 0 0 0.15vmin #ebfdf6d8;
+    transition: 200ms linear;
+}
+
+.s-button:hover::before,
+.s-button:focus-visible::before {
+    opacity: 1;
+    background-color: #55ffbba4;
+    transition: background-color 200ms, opacity 300ms;
+}
+
+.sources {
+    position: relative;
+}
+
+
+.s-content {
+    position: absolute;
+    top: -0.1vmin;
+    left: 50%;
+    width: 0;
+    height: 0vmin;
+    width: 0vmin;
+    font-size: 0;
+    overflow: hidden;
+    text-align: center;
+    transition: 500ms;
+
+}
+
+.s-content-popup {
+    top: -11vmin;
+    left: calc(50% - calc(var(--app-width) / 2));
+
+    width: 40vmin;
+    height: 9vmin;
+    font-size: 1.8vmin;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f2fa;
+    border: 1px solid white;
+    border-radius: 0.3vmin;
+    line-height: 3vmin;
+}
+
+
+.github-icon {
+    height:2.5vmin;
 }
 
 
@@ -181,8 +317,8 @@ button:active {
 
 @media screen and (orientation: portrait) {
     .container {
-        width: 80vmin;
-        height: 120vmin;
+        width: calc(var(--app-width) * 2);
+        height: 124vmin;
     }
 
     .display-wrapper {
@@ -230,29 +366,57 @@ button:active {
         font-size: 8vmin;
      }
 
+     .credits {
+        margin-bottom: 12vmin;
+     }
+
+
+     .s-button {
+        height: 12vmin;
+        width: 12vmin;
+    }
+
+ 
+    .s-button::before {
+        transform: perspective(5vmin) rotateX(50deg) scale(0.9, 0.4);
+        filter: blur(3.6vmin);
+    }
+    
+
+    .s-button:hover,
+    .s-button:focus-visible {
+        box-shadow: 0 0 2vmin #76fac56b,
+                    0 0 8vmin #76fac5af;
+        text-shadow: 0 0 0.3vmin #ebfdf6d8;
+        
+    }
+
+    .s-button {
+        font-size: 7vmin;
+    }
+    
+    .s-content {
+        top: 0vmin;
+    }
+    
+    .s-content-popup {
+        top: -22vmin;
+        width: calc(var(--app-width) * 2);
+        left: calc(50% - var(--app-width));
+        height: 18vmin;
+        font-size: 3.6vmin;
+        border-radius: 0.6vmin;
+        line-height: 6vmin;
+
+    }
+
+    .github-icon {
+        height:5vmin;
+    }
 }
 
-.active {
-    color:#77b69d;
-}
 
 
-/* ==================================================== */
-/*     
-    background-color: rgb(255, 208, 0);
-    background-color: rgb(255, 187, 0);
-*/
 
-/* background-image: linear-gradient(to left bottom, 
-                                    #944b94, #d75a88,
-                                        #ff7e71, #ffb25f); */
-                                    /* color: #38438b, #ffeb68, #68ffc0, */
-
-/* background-image: linear-gradient(to left top, 
-                                        #856d85, #966375, #976c68, 
-                                        #96724c, #9c9772, #669c86);
-                                        background-image: linear-gradient(to left top, 
-                                        #856d85, #966375, #976c68, 
-                                        #b6895a, #b4af84, #77b69d); */
 
 

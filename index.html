@@ -8,25 +8,44 @@
     <link rel="stylesheet" href="./styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Big+Shoulders+Display:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="display-wrapper">
-            <div class="display">
-                <div class='err'></div>
-                <div class='display-content'></div>
-                <div class='cursor'>|</div>
+
+    <!-- Calculator -->
+
+    <main class="calc-wrapper">
+        <div class="container">
+            <div class="display-wrapper">
+                <div class="display">
+                    <div class='err'></div>
+                    <div class='display-content'></div>
+                    <div class='cursor'>|</div>
+                </div>
+            </div>
+        
+            <div class="buttons-container"></div>
+        </div>
+    </main>
+
+
+    
+    <!-- Credits -->
+
+    <footer class="credits">
+        <div class="sources">
+            <button class="s-button">C</button>
+            <div class="s-content">
+                <div>
+                    <div class="git">
+                        Source code: <a href="https://github.com/birds-chirping/calculator"><img class="github-icon" src="./images/gitlogo.png" alt="GitHub logo"> birds-chirping</a>
+                    </div>
+                    Background photo by <a href="https://unsplash.com/@fakurian">Milad Fakurian</a>
+                </div>
             </div>
         </div>
-        
-        <div class="buttons-container"></div>
-    </div>
+    </footer>
 
-    <div class="credits">
-        <div>Photo by <a href="https://unsplash.com/@fakurian?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Milad Fakurian</a>
-             on <a href="https://unsplash.com/wallpapers/colors/grey?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></div>
-    </div>
     <script src="./app.js"></script>
 </body>
 </html>

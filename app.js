@@ -2,6 +2,8 @@ const btnContainer = document.querySelector('.buttons-container');
 const display = document.querySelector('.display-content');
 const cursor = document.querySelector('.cursor');
 const errorMess = document.querySelector('.err');
+const creditsBtn = document.querySelector('.s-button');
+const popup = document.querySelector('.s-content');
 display.textContent = 'Hello!';
 
 const btnData = [['clear', 'C'], ['sign', '+/-'], ['del', "\u232B"], 
@@ -16,6 +18,20 @@ let secondNum = '';
 let operator = '';
 let last = '';
 let number = 'first';
+
+// ---------- C R E D I T S   B U T T O N ---------- //
+
+creditsBtn.addEventListener('click', () => {
+    if (creditsBtn.textContent === 'X') {
+        creditsBtn.textContent = 'C';
+        popup.classList.remove('s-content-popup');
+    } else {
+        creditsBtn.textContent = 'X'; 
+        popup.classList.add('s-content-popup');
+    }
+})
+
+
 
 // ---------- A D D   B U T T O N S ---------- //
 
@@ -56,6 +72,7 @@ btnData.forEach(b => {
 
 document.addEventListener('keydown', (e) => {
     console.log(e);
+    let other = 'n';
     switch (true) {
         case !isNaN(e.key):
             addDigit(e.key);
@@ -92,13 +109,20 @@ document.addEventListener('keydown', (e) => {
             break;
         case e.key === '.':
             id = 'fpoint';
-            clickPoint();            
+            clickPoint();  
+            break;
+        case e.key != 0:
+            other = 'y';    
     }
-    const b = document.querySelector(`#${id}`);
-    b.classList.add('active');
-    setTimeout(() => {
-        b.classList.remove('active');
-    }, 200);   
+
+    // Change button color only if valid key is pressed (keyboard)
+    if (other === 'n') {
+        const b = document.querySelector(`#${id}`);
+        b.classList.add('active');
+        setTimeout(() => {
+            b.classList.remove('active');
+        }, 200);  
+    } 
 });
 
 
