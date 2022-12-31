@@ -1,5 +1,19 @@
 :root {
     --app-width: 40vmin;
+    --app-height: 62vmin;
+    --btn-digit-color: #4e409c; 
+    /* --btn-digit-color: #8d87ad;  */
+    --btn-op-color: #d1985b;
+    --btn-main-bg: #e3e2e7;
+    --btn-op-main-bg: #d1d0da;
+}
+
+@font-face {
+    font-family: 'goboldregular';
+    src: url('./fonts/Garet-Book.woff2') format('woff2'),
+         url('./fonts/Garet-Book.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 html { 
@@ -16,7 +30,6 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* border: 1px solid red; */
 }
 
 body {
@@ -26,6 +39,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    gap: 2vmin;
 }
 
 a {
@@ -34,6 +48,7 @@ a {
 
 a:link, a:visited {
     color: #976ee4a4;
+    font-weight: 600;
 }
 
 a:hover, a:active {
@@ -44,7 +59,7 @@ a:hover, a:active {
 .container {
     display: flex;
     flex-direction: column;
-    height: 62vmin;
+    height: var(--app-height);
     width: var(--app-width);
 }
 
@@ -154,11 +169,12 @@ button {
     border-radius: 0.8vmin;
     border: 0;
     margin: 0.5vmin;
-    color: #4e409c;
+    color: var(--btn-digit-color);
     font-size: 3vmin;
     box-shadow: inset 0.2vmin 0.2vmin 0.3vmin rgba(255, 255, 255, 0.707),
-                inset -0.2vmin -0.2vmin 0.3vmin rgba(0, 0, 0, 0.399);
-    text-shadow: 0.2vmin 0.1vmin 0.2vmin rgba(245,245,245,0.7); 
+                inset -0.2vmin -0.2vmin 0.3vmin rgba(0, 0, 0, 0.359);
+    text-shadow: 0.2vmin 0.1vmin 0.2vmin rgba(245,245,245,0.85); 
+    
 }
 
 #del {
@@ -183,17 +199,22 @@ button:focus-visible {
 #clear,
 #del,
 #equal { 
-    background-color: #e3e2e7;
+    background-color: var(--btn-main-bg);
 }
 
 .num {
     font-size: 4vmin;
-    background-color: #e3e2e7;
+    background-color: var(--btn-main-bg);
  }
 
+ 
+
 .op {
-    background-color: #d1d0da; 
-    color: #d1985b;   
+    background-color: var(--btn-op-main-bg); 
+    color: var(--btn-op-color);   
+
+    box-shadow: inset 0.2vmin 0.2vmin 0.3vmin rgba(255, 255, 255, 0.548),
+                inset -0.2vmin -0.2vmin 0.3vmin rgba(0, 0, 0, 0.450);
 }
 
 .active {
@@ -206,8 +227,6 @@ button:focus-visible {
     flex: 1;
     display: flex;
     align-items: center;
-    /* justify-content: space-around; */
-    /* width: 15vmin; */
     margin-bottom: 6vmin;
 }
 
@@ -235,8 +254,6 @@ button:focus-visible {
     transition: box-shadow 500ms, background-color 500ms, color 500ms;
 
 }
-
-
 
 
 .s-button::before {
@@ -280,14 +297,14 @@ button:focus-visible {
     position: absolute;
     top: -0.1vmin;
     left: 50%;
-    width: 0;
     height: 0vmin;
     width: 0vmin;
     font-size: 0;
     overflow: hidden;
     text-align: center;
     transition: 500ms;
-
+    font-family: 'goboldregular', sans-serif;
+    font-weight: 400;
 }
 
 .s-content-popup {
@@ -301,9 +318,9 @@ button:focus-visible {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f4f2fa;
-    border: 1px solid white;
-    border-radius: 0.3vmin;
+    background-color: #f8f7f7;
+    border: 1px solid #44c28fa4;
+    border-radius: 0.5vmin;
     line-height: 3vmin;
 }
 
@@ -315,10 +332,14 @@ button:focus-visible {
 
 /* ---------------------- M E D I A ------------------ */
 
-@media screen and (orientation: portrait) {
+@media screen and (max-aspect-ratio: 8/9) {
+    body {
+        justify-content: flex-start;
+    }
+
     .container {
         width: calc(var(--app-width) * 2);
-        height: 124vmin;
+        height: calc(var(--app-height) * 2);
     }
 
     .display-wrapper {
@@ -353,8 +374,13 @@ button:focus-visible {
         font-size: 6vmin;
         border-radius: 1.6vmin;
         box-shadow: inset 0.4vmin 0.4vmin 0.6vmin rgba(255, 255, 255, 0.707),
-                    inset -0.4vmin -0.4vmin 0.6vmin rgba(0, 0, 0, 0.399);
+                    inset -0.4vmin -0.4vmin 0.6vmin rgba(0, 0, 0, 0.359);
         text-shadow: 0.4vmin 0.2vmin 0.4vmin rgba(245,245,245,0.7); 
+    }
+
+    .op {
+        box-shadow: inset 0.4vmin 0.4vmin 0.6vmin rgba(255, 255, 255, 0.548),
+                    inset -0.4vmin -0.4vmin 0.6vmin rgba(0, 0, 0, 0.450);
     }
     
     #del {
@@ -385,10 +411,9 @@ button:focus-visible {
 
     .s-button:hover,
     .s-button:focus-visible {
-        box-shadow: 0 0 2vmin #76fac56b,
+        box-shadow: 0 0 4vmin #76fac56b,
                     0 0 8vmin #76fac5af;
-        text-shadow: 0 0 0.3vmin #ebfdf6d8;
-        
+        text-shadow: 0 0 0.3vmin #ebfdf6d8;        
     }
 
     .s-button {
@@ -405,7 +430,7 @@ button:focus-visible {
         left: calc(50% - var(--app-width));
         height: 18vmin;
         font-size: 3.6vmin;
-        border-radius: 0.6vmin;
+        border-radius: 1vmin;
         line-height: 6vmin;
 
     }
