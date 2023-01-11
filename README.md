@@ -18,3 +18,4 @@ Make a simple calculator, using Javascript, HTML, CSS.
 - '+/-' button
 - Blinking pointer when display is empty
 - Neon button (credits)
+- Responsive design
