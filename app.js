@@ -4,6 +4,7 @@ const cursor = document.querySelector('.cursor');
 const errorMess = document.querySelector('.err');
 const creditsBtn = document.querySelector('.s-button');
 const popup = document.querySelector('.s-content');
+const gitIcon = document.querySelector('.github-icon');
 display.textContent = 'Hello!';
 
 const btnData = [['clear', 'C'], ['sign', '+/-'], ['del', "\u232B"], 
@@ -25,9 +26,11 @@ creditsBtn.addEventListener('click', () => {
     if (creditsBtn.textContent === 'X') {
         creditsBtn.textContent = 'C';
         popup.classList.remove('s-content-popup');
+        gitIcon.classList.add('opacity');
     } else {
         creditsBtn.textContent = 'X'; 
         popup.classList.add('s-content-popup');
+        gitIcon.classList.remove('opacity');
     }
 })
 

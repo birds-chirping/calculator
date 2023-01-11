@@ -295,7 +295,7 @@ button:focus-visible {
 
 .s-content {
     position: absolute;
-    top: -0.1vmin;
+    top: 50%;
     left: 50%;
     height: 0vmin;
     width: 0vmin;
@@ -326,7 +326,14 @@ button:focus-visible {
 
 
 .github-icon {
-    height:2.5vmin;
+    height: 2.5vmin;
+    opacity: 1;
+    transition: 200ms;
+}
+
+.opacity {
+    opacity: 0;
+    transition: 200ms;
 }
 
 
@@ -420,10 +427,6 @@ button:focus-visible {
         font-size: 7vmin;
     }
     
-    .s-content {
-        top: 0vmin;
-    }
-    
     .s-content-popup {
         top: -22vmin;
         width: calc(var(--app-width) * 2);
@@ -439,9 +442,3 @@ button:focus-visible {
         height:5vmin;
     }
 }
-
-
-
-
-
-
