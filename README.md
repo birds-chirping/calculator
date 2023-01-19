@@ -1,7 +1,7 @@
 # <a href="https://birds-chirping.github.io/calculator/">Live Preview</a>
 
 ## The Odin Project <a href="https://www.theodinproject.com/lessons/foundations-calculator">assignment</a>
-Make a simple calculator, using Javascript, HTML, CSS.
+Make a simple calculator, using JavaScript, HTML, CSS.
 
 - The calculator should evaluate a single pair of numbers at a time.
 - Create functions for all of the basic math operators found on simple calculators (add, subtract, multiply, divide).
